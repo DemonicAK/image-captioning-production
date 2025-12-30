@@ -1,0 +1,24 @@
+# virtualenv
+.venv
+venv
+env
+
+# python cache
+__pycache__/
+*.pyc
+
+# git
+.git
+.gitignore
+
+# editor
+.vscode
+.DS_Store
+
+# large artifacts (if any)
+*.h5
+*.ckpt
+*.pt
+*.pth
+*.npz
+

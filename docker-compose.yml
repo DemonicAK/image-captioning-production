@@ -1,0 +1,20 @@
+services:
+  training:
+    build:
+      context: .
+      dockerfile: training/DOCKERFILE
+    container_name: image-caption-training
+    volumes:
+      - ./shared/artifacts:/app/artifacts
+    profiles: ["training"]
+
+  inference:
+    build:
+      context: .
+      dockerfile: inference/DOCKERFILE
+    container_name: image-caption-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./shared/artifacts:/app/artifacts
+    profiles: ["inference"]
