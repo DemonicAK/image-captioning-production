@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: training/DOCKERFILE
+    image: image-caption-training:latest
     container_name: image-caption-training
     volumes:
       - ./shared/artifacts:/app/artifacts
@@ -12,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: inference/DOCKERFILE
+    image: image-caption-api:latest
     container_name: image-caption-api
     ports:
       - "8000:8000"
