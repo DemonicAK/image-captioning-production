@@ -6,7 +6,8 @@ on:
       - main
     paths:
       - 'inference/**'  # ONLY trigger if files in the inference folder change
-
+  workflow_dispatch:
+  
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: asia-south1
