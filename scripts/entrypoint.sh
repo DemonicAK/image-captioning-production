@@ -7,7 +7,7 @@ set -e
 
 # mkdir -p inference/artifacts
 
-echo "Downloading model from S3..."
+# echo "Downloading model from S3..."
 # aws s3 cp $S3_BUCKET/$MODEL_NAME $DEST_PATH
 
 echo "Model ready for inference."

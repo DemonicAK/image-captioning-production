@@ -1,0 +1,60 @@
+# =============================================================================
+# Image Captioning Training Configuration
+# =============================================================================
+# Modify paths and hyperparameters below to customize training.
+# Run: python -m training.train --config training/config.yaml
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Data Configuration
+# -----------------------------------------------------------------------------
+images_path: "/kaggle/input/flickr8k/Images/"
+captions_file: "/kaggle/input/flickr8k/captions.txt"
+glove_path: "/kaggle/input/glove6b200d/glove.6B.200d.txt"
+
+# Data split ratios (must sum to 1.0)
+train_ratio: 0.6
+val_ratio: 0.2
+test_ratio: 0.2
+
+# Vocabulary settings
+word_count_threshold: 5  # Minimum word frequency for inclusion
+random_seed: 42
+
+# -----------------------------------------------------------------------------
+# Model Configuration
+# -----------------------------------------------------------------------------
+# Feature extractor: "EfficientNetB3" or "InceptionV3"
+feature_extractor: "EfficientNetB3"
+feature_dim: 1536  # 1536 for EfficientNetB3, 2048 for InceptionV3
+image_size: [300, 300]  # [300, 300] for EfficientNetB3, [299, 299] for InceptionV3
+
+# Embedding and architecture
+embedding_dim: 200  # GloVe embedding dimension
+hidden_dim: 256  # LSTM and attention dimension
+num_attention_heads: 4
+
+# Regularization
+dropout_rate: 0.3
+recurrent_dropout: 0.2
+
+# -----------------------------------------------------------------------------
+# Training Configuration
+# -----------------------------------------------------------------------------
+batch_size: 64
+epochs: 20
+learning_rate: 0.0001
+
+# Learning rate scheduling
+lr_decay_factor: 0.5
+lr_patience: 3
+min_lr: 0.000001
+
+# Early stopping
+early_stopping_patience: 5
+
+# Mixed precision (float16) for faster training on GPU
+use_mixed_precision: true
+
+# Output directory for model checkpoints and artifacts
+artifacts_dir: "../shared/artifacts"

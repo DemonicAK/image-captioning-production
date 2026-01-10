@@ -27,8 +27,7 @@ class ImageFeatureEncoder:
         image = self._load_and_preprocess_image(image)
         features = self.feature_extractor(
             image,
-            training=False
-        )
+            training=False)
         return features
 
 def image_preprocessor(image):
