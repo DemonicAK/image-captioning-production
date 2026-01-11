@@ -12,10 +12,18 @@ Modules:
     evaluation: Metrics and inference decoders.
     callbacks: Custom training callbacks.
     utils: Utility functions.
+    kaggle_utils: Kaggle-specific helpers.
 
 Example:
     >>> from training.train import TrainingPipeline
     >>> pipeline = TrainingPipeline("config.yaml")
+    >>> pipeline.run()
+
+Kaggle Example:
+    >>> from training.kaggle_utils import create_kaggle_config
+    >>> create_kaggle_config()
+    >>> from training.train import TrainingPipeline
+    >>> pipeline = TrainingPipeline("training/config.kaggle.yaml")
     >>> pipeline.run()
 """
 
@@ -27,6 +35,12 @@ from training.data import CaptionLoader, Tokenizer, DatasetBuilder
 from training.features import get_feature_extractor
 from training.models import build_caption_model
 from training.trainers import Trainer
+from training.kaggle_utils import (
+    is_kaggle_environment,
+    setup_kaggle_training,
+    create_kaggle_config,
+    KaggleNotebookHelper,
+)
 
 __all__ = [
     "Config",
@@ -37,4 +51,8 @@ __all__ = [
     "get_feature_extractor",
     "build_caption_model",
     "Trainer",
+    "is_kaggle_environment",
+    "setup_kaggle_training",
+    "create_kaggle_config",
+    "KaggleNotebookHelper",
 ]

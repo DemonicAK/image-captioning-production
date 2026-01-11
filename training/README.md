@@ -168,6 +168,95 @@ class MyCallback(tf.keras.callbacks.Callback):
         pass
 ```
 
+## Running on Kaggle
+
+Yes! The training pipeline works on Kaggle notebooks. Here's how:
+
+### Setup (One-time)
+
+1. In a Kaggle notebook, add these required datasets:
+   - `adityajn105/flickr8k` (Flickr8k images & captions)
+   - `incorpes/glove6b200d` (GloVe embeddings)
+
+2. Install dependencies:
+```python
+!pip install -q pyyaml tqdm nltk
+```
+
+### Running Training
+
+```python
+# Clone repo (or upload to notebook)
+!git clone https://github.com/DemonicAK/image-captioning-production.git
+%cd image-captioning-production
+
+# Setup and run
+from training.kaggle_utils import setup_kaggle_training, create_kaggle_config
+from training.train import TrainingPipeline
+
+# Create Kaggle config (auto-detects dataset paths)
+create_kaggle_config()
+
+# Run training
+pipeline = TrainingPipeline("training/config.kaggle.yaml")
+pipeline.run()
+```
+
+### Download Outputs
+
+After training, download from `/kaggle/working/`:
+- `image_caption_model_final.keras` - Trained model
+- `wordtoix.json`, `ixtoword.json` - Tokenizer files
+- `checkpoint.keras` - Best model checkpoint
+- `logs/` - TensorBoard logs
+
+### Kaggle Notebook Template
+
+A complete Kaggle notebook example:
+
+```python
+# Cell 1: Install dependencies
+!pip install -q pyyaml tqdm nltk
+
+# Cell 2: Clone repo and setup
+!git clone https://github.com/DemonicAK/image-captioning-production.git
+%cd image-captioning-production
+
+# Cell 3: Create Kaggle config
+from training.kaggle_utils import create_kaggle_config, setup_kaggle_training
+create_kaggle_config()
+env_info = setup_kaggle_training(verbose=True)
+
+# Cell 4: Run training
+from training.train import TrainingPipeline
+pipeline = TrainingPipeline("training/config.kaggle.yaml")
+pipeline.run()
+
+# Cell 5: Check outputs
+import os
+print("\nGenerated files:")
+for f in sorted(os.listdir("/kaggle/working")):
+    size = os.path.getsize(f"/kaggle/working/{f}") / 1e6
+    print(f"  {f}: {size:.1f} MB")
+```
+
+### Important Notes for Kaggle
+
+- **Enable GPU** in notebook settings (required for training)
+- **Time limit**: Standard Kaggle notebooks have 9-hour runtime. Training 20 epochs takes ~4-6 hours
+- **Memory**: Set `batch_size: 32` if running out of memory
+- **Datasets**: Make sure both Flickr8k and GloVe datasets are added as input sources
+
+### Customizing for Kaggle
+
+Edit `config.kaggle.yaml` if using different datasets:
+
+```yaml
+# Example: Different Flickr dataset
+images_path: "/kaggle/input/flickr-image-dataset/flickr30k_images/flickr30k_images/"
+captions_file: "/kaggle/input/flickr-image-dataset/results.csv"
+```
+
 ## Requirements
 
 - Python >= 3.9

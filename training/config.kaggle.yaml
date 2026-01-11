@@ -1,0 +1,39 @@
+# =============================================================================
+# Kaggle-Specific Configuration for Image Captioning Training
+# =============================================================================
+# This config is pre-set for Kaggle datasets. Modify dataset names if needed.
+
+# Data Configuration (Kaggle paths)
+images_path: "/kaggle/input/adityajn105/flickr8k/Images/"
+captions_file: "/kaggle/input/adityajn105/flickr8k/captions.txt"
+glove_path: "/kaggle/input/incorpes/glove6b200d/glove.6B.200d.txt"
+
+# Data split ratios
+train_ratio: 0.6
+val_ratio: 0.2
+test_ratio: 0.2
+word_count_threshold: 5
+random_seed: 42
+
+# Model Configuration
+feature_extractor: "EfficientNetB3"
+feature_dim: 1536
+image_size: [300, 300]
+embedding_dim: 200
+hidden_dim: 256
+num_attention_heads: 4
+dropout_rate: 0.3
+recurrent_dropout: 0.2
+
+# Training Configuration
+batch_size: 64
+epochs: 20
+learning_rate: 0.0001
+lr_decay_factor: 0.5
+lr_patience: 3
+min_lr: 0.000001
+early_stopping_patience: 5
+use_mixed_precision: true
+
+# Save to Kaggle working directory
+artifacts_dir: "/kaggle/working"
