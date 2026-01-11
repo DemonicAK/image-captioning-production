@@ -410,7 +410,7 @@ def build_caption_model(
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-        metrics=["accuracy"],
+        # metrics=["accuracy"],
     )
     
     logger.info(f"Built caption model with {model.count_params():,} parameters")
