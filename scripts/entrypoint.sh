@@ -15,4 +15,4 @@ echo "Model ready for inference."
 echo "Running startup tasks..."
 
 echo "Starting FastAPI..."
-exec uvicorn inference.app:app --host 0.0.0.0 --port 8000
+exec uvicorn inference.main:app --host 0.0.0.0 --port 8000
