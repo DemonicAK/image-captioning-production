@@ -1,14 +1,4 @@
 services:
-  training:
-    build:
-      context: .
-      dockerfile: training/Dockerfile
-    image: image-caption-training:latest
-    container_name: image-caption-training
-    volumes:
-      - ./shared/artifacts:/app/artifacts
-    profiles: ["training"]
-
   inference:
     build:
       context: .
