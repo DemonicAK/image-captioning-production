@@ -186,13 +186,13 @@ class TrainingPipeline:
             batch_size=cfg.training.batch_size,
         )
         
-        # Build samples
-        train_samples = builder.build_samples(
+        # Prepare data as tensors
+        train_prepared = builder.prepare_data(
             splits.train,
             features,
             self._tokenizer,
         )
-        val_samples = builder.build_samples(
+        val_prepared = builder.prepare_data(
             splits.val,
             features,
             self._tokenizer,
@@ -200,21 +200,19 @@ class TrainingPipeline:
         
         # Create datasets
         train_ds = builder.create_dataset(
-            train_samples,
-            features,
+            train_prepared,
             shuffle=True,
             repeat=True,
         )
         val_ds = builder.create_dataset(
-            val_samples,
-            features,
+            val_prepared,
             shuffle=False,
             repeat=True,
         )
         
         # Compute steps
-        steps_per_epoch = builder.compute_steps_per_epoch(len(train_samples))
-        val_steps = builder.compute_steps_per_epoch(len(val_samples))
+        steps_per_epoch = builder.compute_steps_per_epoch(train_prepared)
+        val_steps = builder.compute_steps_per_epoch(val_prepared)
         
         return train_ds, val_ds, steps_per_epoch, val_steps
     
