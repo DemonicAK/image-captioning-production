@@ -36,6 +36,7 @@ class DataConfig:
     test_ratio: float = 0.2
     word_count_threshold: int = 5
     random_seed: int = 42
+    bleu_sample_size: int = 1000
 
     def __post_init__(self) -> None:
         """Validate configuration values."""
@@ -152,6 +153,7 @@ class Config:
             test_ratio=config_dict.get("test_ratio", 0.2),
             word_count_threshold=config_dict.get("word_count_threshold", 5),
             random_seed=config_dict.get("random_seed", 42),
+            bleu_sample_size=config_dict.get("bleu_sample_size", 1000)
         )
         
         model_config = ModelConfig(

@@ -367,7 +367,7 @@ class TrainingPipeline:
         logger.info("Starting Image Captioning Training Pipeline")
         logger.info("=" * 60)
         cfg = self._config
-        sample_size = cfg.get("bleu_sample_size", 1000)
+        sample_size = cfg.data.bleu_sample_size
 
         # Setup
         self._setup()
