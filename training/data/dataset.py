@@ -182,28 +182,42 @@ class DatasetBuilder:
         """
         features_path = Path(features_path)
         
-        # Load features with memory-mapping (zero-copy, doesn't load into RAM)
-        logger.info(f"Memory-mapping features from {features_path}")
-        features_data = np.load(features_path, allow_pickle=True, mmap_mode="r")
+        # Load features - dict-style features can't be memory-mapped
+        # but we'll build a contiguous array that's much smaller than
+        # the full sample expansion
+        logger.info(f"Loading features from {features_path}")
+        features_data = np.load(features_path, allow_pickle=True)
         
         # Handle dict-style features (key -> vector) vs array-style
         if isinstance(features_data, np.ndarray) and features_data.dtype == object:
-            # Features saved as dict
+            # Features saved as dict - can't mmap Python objects
             features_dict = features_data.item()
             if feature_keys is None:
                 feature_keys = list(features_dict.keys())
             
-            # Build stacked feature array for mmap-like access
-            # This is a one-time cost but much smaller than full expansion
-            logger.info(f"Building feature index for {len(feature_keys)} images")
+            # Build stacked feature array - this is O(num_images * feature_dim)
+            # which is MUCH smaller than O(num_samples * feature_dim)
+            # e.g., 31k images * 1536 * 2 bytes = ~95MB (float16)
+            # vs 1.8M samples * 1536 * 4 bytes = ~11GB (float32)
+            logger.info(f"Building feature array for {len(feature_keys)} images")
             feature_array = np.stack(
                 [features_dict[k] for k in feature_keys],
                 axis=0,
             )
+            
+            # Convert to float16 for memory savings (50% reduction)
             if self._use_float16:
                 feature_array = feature_array.astype(np.float16)
+                logger.info(
+                    f"Feature array shape: {feature_array.shape}, "
+                    f"dtype: {feature_array.dtype}, "
+                    f"size: {feature_array.nbytes / (1024**2):.1f}MB"
+                )
+            
+            # Free the dict to release memory
+            del features_dict, features_data
         else:
-            # Features already in array format
+            # Features already in array format - can potentially mmap
             feature_array = features_data
             if feature_keys is None:
                 raise ValueError(
