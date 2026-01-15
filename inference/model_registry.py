@@ -39,7 +39,7 @@ class ModelConfig:
     def from_artifacts_dir(
         cls,
         artifacts_dir: str,
-        model_filename: str = "image_caption_model_final.keras",
+        model_filename: str = "image_caption_model_final_0.keras",
     ) -> "ModelConfig":
         """Create config from artifacts directory.
         
@@ -242,6 +242,9 @@ class ModelBundle:
         from tensorflow.keras.models import load_model
         
         logger.info(f"Loading model from {config.model_path}")
+        
+        # Clear session to avoid duplicate op names from previous loads
+        tf.keras.backend.clear_session()
         
         # Load caption model
         model = load_model(config.model_path, compile=False)

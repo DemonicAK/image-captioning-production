@@ -265,7 +265,7 @@ class TrainingPipeline:
         model,
         features: Dict[str, np.ndarray],
         descriptions: Dict[str, List[str]],
-        sample_size: int = 100,
+        sample_size: int = 1000,
     ) -> Tuple[BLEUScore, List[Dict[str, Any]]]:
         """Evaluate model with BLEU scores on random samples.
         
@@ -366,6 +366,8 @@ class TrainingPipeline:
         logger.info("=" * 60)
         logger.info("Starting Image Captioning Training Pipeline")
         logger.info("=" * 60)
+        cfg = self._config
+        sample_size = cfg.get("bleu_sample_size", 1000)
 
         # Setup
         self._setup()
@@ -405,13 +407,13 @@ class TrainingPipeline:
             model, train_ds, val_ds, steps_per_epoch, val_steps
         )
 
-        # Evaluate BLEU scores on test set (100 random images)
+        # Evaluate BLEU scores on test set (1000 random images)
         test_descriptions = self._splits.test
         corpus_scores, per_image_results = self._evaluate_bleu(
             model=model,
             features=self._features,
             descriptions=test_descriptions,
-            sample_size=100,
+            sample_size=1000,
         )
         
         # Save BLEU results to CSV

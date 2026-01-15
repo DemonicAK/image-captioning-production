@@ -367,7 +367,7 @@ def build_caption_model(
     text_emb = tf.keras.layers.Embedding(
         vocab_size,
         embedding_dim,
-        mask_zero=True,
+        mask_zero=False,
         weights=[embedding_matrix],
         trainable=False,
     )(text_input)

@@ -10,9 +10,9 @@ captions_file: "/kaggle/input/flickr30k/captions.txt"
 glove_path: "/kaggle/input/glove6b200d/glove.6B.200d.txt"
 
 # Data split ratios
-train_ratio: 0.6
+train_ratio: 0.7
 val_ratio: 0.2
-test_ratio: 0.2
+test_ratio: 0.1
 word_count_threshold: 5
 random_seed: 42
 
@@ -28,7 +28,7 @@ recurrent_dropout: 0.2
 
 # Training Configuration
 batch_size: 64
-epochs: 20
+epochs: 12
 learning_rate: 0.0001
 lr_decay_factor: 0.5
 lr_patience: 3
@@ -36,5 +36,8 @@ min_lr: 0.000001
 early_stopping_patience: 5
 use_mixed_precision: true
 
+
+# Evaluation Configuration
+bleu_sample_size: 1000
 # Save to Kaggle working directory
 artifacts_dir: "/kaggle/working"
